@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodjomar Sioting Jr. | Portfolio</title>
+    <meta name="description" content="Rodjomar Sioting Jr. — 4th-year IT student. Portfolio of projects, skills, and certificates.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230f172a'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial' font-weight='700' fill='%230ed5c1' text-anchor='middle'%3ERS%3C/text%3E%3C/svg%3E">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --accent-color: #0ed5c1;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Canvas Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 10%;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            padding-top: 80px;
+        }
+
+        .highlight-title {
+        font-weight: 700;
+        color: var(--accent-color);
+        letter-spacing: 0.5px;
+        text-shadow: 0 0 12px rgba(14, 213, 193, 0.35);
+        }
+
+        .hero-info {
+            max-width: 55%;
+        }
+
+        .hero-info h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-info h1 span {
+            color: var(--accent-color);
+        }
+
+        .typing-text {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            height: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(14, 213, 193, 0.2);
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+        }
+
+        /* Circular Hero Frame */
+        .hero-img-container {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            flex-shrink: 0;
+        }
+
+        .hero-img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 0 25px rgba(14, 213, 193, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+            transition: transform 0.4s ease;
+        }
+
+        .hero-img-container:hover .hero-img img {
+            transform: scale(1.03);
+        }
+
+        .hero-img i {
+            font-size: 5rem;
+            color: var(--accent-color);
+            opacity: 0.7;
+        }
+
+        /* Section Global Layout */
+        section {
+            padding: 6rem 10%;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Uniform Grid Layout */
+        .uniform-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .bento-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(14, 213, 193, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .col-span-2 {
+            grid-column: span 2;
+        }
+
+        .bento-card i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+        }
+
+        .bento-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .bento-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .project-media {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+        }
+
+        .cert-media {
+            aspect-ratio: 16 / 9;
+        }
+
+        .project-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            opacity: 0;
+            cursor: zoom-in;
+            transition: transform 0.4s ease;
+            animation: fadeInImg 0.5s ease forwards;
+        }
+
+        @keyframes fadeInImg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .bento-card:hover .project-media img {
+            transform: scale(1.04);
+        }
+
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.92);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 5vh 5vw;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-overlay img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            cursor: default;
+            animation: fadeInImg 0.3s ease;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.06);
+            color: var(--text-main);
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .lightbox-close:hover {
+            background: var(--accent-color);
+            color: var(--bg-primary);
+            border-color: var(--accent-color);
+        }
+
+        .project-img-placeholder {
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed rgba(255,255,255,0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .bento-card:hover .project-img-placeholder {
+            border-color: var(--accent-color);
+            background: rgba(14, 213, 193, 0.05);
+            color: var(--accent-color);
+        }
+
+        .placeholder-text {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.88rem;
+            opacity: 0.75;
+            line-height: 1.5;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(14, 213, 193, 0.12);
+            border: 1px solid rgba(14, 213, 193, 0.3);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .cert-issuer {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .cert-date {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .skill-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .pill {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .pill:hover {
+            background: rgba(14, 213, 193, 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .timeline {
+            position: relative;
+            border-left: 2px solid var(--border-color);
+            padding-left: 2rem;
+            margin-left: 1rem;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-2rem - 7px);
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .platform-badge {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: 0.3s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+        }
+
+        .platform-badge:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-color);
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+        }
+
+        .contact-info-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-method .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(14, 213, 193, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 968px) {
+            header {
+                flex-direction: column-reverse;
+                justify-content: center;
+                text-align: center;
+                gap: 2.5rem;
+            }
+            .hero-info { max-width: 100%; }
+            .hero-buttons { justify-content: center; }
+            .hero-img-container { width: 280px; height: 280px; margin-bottom: 1.5rem; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .uniform-grid { grid-template-columns: 1fr; }
+            .col-span-2 { grid-column: span 1; }
+            .contact-container { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Canvas Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <nav>
+        <a href="#" class="logo"><i class="fa-solid fa-code"></i> RS<span>.</span></a>
+        <ul class="nav-links">
+            <li><a href="#home" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#certificates" class="nav-link">Certificates</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#experience" class="nav-link">Milestones</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Section -->
+    <header id="home">
+        <div class="hero-info">
+            <h1>Hi, I am <br><span>Rodjomar Sioting Jr.</span></h1>
+            <div class="typing-text" id="typing-element">
+                <strong class="highlight-title">Front-End Developer & UI/UX Learner</strong>
+            </div>
+            <p style="color: var(--text-muted); max-width: 540px; line-height: 1.6;">
+               I am a 4th-year IT student interested in creating useful websites and learning how technology can solve real-world problems.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View Work</a>
+                <a href="sioting_resume.pdf" download="sioting_resume.pdf" class="btn btn-secondary">
+                    <i class="fa-solid fa-download"></i> Download Resume
+                </a>
+            </div>
+        </div>
+        <div class="hero-img-container">
+            <div class="hero-img">
+                <img src="images/pic.jpg" alt="Rodjomar Sioting Jr."
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" fetchpriority="high">
+                <i class="fa-solid fa-user-graduate" style="display:none;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="bento-grid">
+            <div class="bento-card col-span-2">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h3>Who I Am</h3>
+                <p>I'm a 4th-year Information Technology student. Across my four years, I've worked on group and individual web projects, specializing in building functional solutions for web and cybersecurity applications.</p>
+            </div>
+
+            <div class="bento-card">
+                <i class="fa-solid fa-seedling"></i>
+                <h3>Eager to Learn</h3>
+                <p>I'm actively building my technical foundations and consistently seek opportunities to learn and refine my practical engineering skills.</p>
+            </div>
+
+            <div class="bento-card">
+                <i class="fa-solid fa-arrows-spin"></i>
+                <h3>Adaptable</h3>
+                <p>I adapt quickly to new technologies, workflows, and modern development tools required for effective collaboration.</p>
+            </div>
+
+            <div class="bento-card col-span-2">
+                <i class="fa-solid fa-heart"></i>
+                <h3>Passionate & Team-Oriented</h3>
+                <p>I value dedicated execution and strong communication within group dynamic environments to build successful software solutions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" style="background: rgba(30, 41, 59, 0.3);">
+        <h2 class="section-title">Skills</h2>
+        <div class="bento-grid">
+            
+            <div class="bento-card">
+                <i class="fa-solid fa-code"></i>
+                <h3>Basic Programming</h3>
+                <p>Coursework exposure focused on core fundamentals and web technologies.</p>
+                <div class="skill-pills">
+                    <div class="pill"><i class="fa-brands fa-python" style="color:#3776ab; font-size:12px;"></i> Python (basic)</div>
+                    <div class="pill"><i class="fa-brands fa-java" style="color:#f89820; font-size:12px;"></i> Java (basic)</div>
+                    <div class="pill"><i class="fa-brands fa-html5" style="color:#e34c26; font-size:12px;"></i> HTML</div>
+                    <div class="pill"><i class="fa-brands fa-css3-alt" style="color:#264de4; font-size:12px;"></i> CSS</div>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <i class="fa-solid fa-table"></i>
+                <h3>Office & Data Entry</h3>
+                <p>Comfortable with documentation, standard office platforms, and data processing tasks.</p>
+                <div class="skill-pills">
+                    <div class="pill">Microsoft Excel</div>
+                    <div class="pill">Data Entry</div>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <i class="fa-solid fa-user-check"></i>
+                <h3>Personal Strengths</h3>
+                <p>Core professional attributes brought to collaborative teams.</p>
+                <div class="skill-pills">
+                    <div class="pill">Passionate</div>
+                    <div class="pill">Adaptable</div>
+                    <div class="pill">Eager to Learn</div>
+                    <div class="pill">Team Collaboration</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section id="certificates">
+        <h2 class="section-title">Certificate</h2>
+        <div class="uniform-grid">
+
+            <div class="bento-card cert-card">
+                <div class="project-media cert-media">
+                    <img src="images/cert_acad.jpg" alt="Certificate title here"
+                         onclick="openLightbox(this.src, this.alt)"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="lazy">
+                    <div class="project-img-placeholder" style="display:none;">
+                        <p><i class="fa-solid fa-image" style="font-size:1.1rem; margin:0 6px 0 0;"></i> Add certificate here</p>
+                    </div>
+                </div>
+                <h3>Certificate Well Performance</h3>
+                <p class="cert-issuer">Academic</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="uniform-grid">
+            
+            <div class="bento-card">
+                <div class="project-media">
+                    <img src="images/capstone.png" alt="Iloilo Public Library System screenshot"
+                         onclick="openLightbox(this.src, this.alt)"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="lazy">
+                    <div class="project-img-placeholder" style="display:none;">
+                        <p><i class="fa-solid fa-image" style="font-size:1.1rem; margin:0 6px 0 0;"></i> Add screenshot here</p>
+                    </div>
+                </div>
+                <h3>Library Management System</h3>
+                <p class="placeholder-text">A system created to enhance public library workflows and record accuracy.</p>
+                <div class="skill-pills">
+                    <div class="pill">Capstone Project</div>
+                    <div class="pill">IT Systems</div>
+                    <div class="pill">Group Collaboration</div>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <div class="project-media">
+                    <img src="images/ecommerce.jpg" alt="E-Commerce System screenshot"
+                         onclick="openLightbox(this.src, this.alt)"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="lazy">
+                    <div class="project-img-placeholder" style="display:none;">
+                        <p><i class="fa-solid fa-image" style="font-size:1.1rem; margin:0 6px 0 0;"></i> Add screenshot here</p>
+                    </div>
+                </div>
+                <h3>E-Commerce System</h3>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">1st Year, Group Project</p>
+                <p class="placeholder-text">First group project where we created a ecommerce website for shoes.</p>
+                <div class="skill-pills">
+                    <div class="pill">First Group Project</div>
+                    <div class="pill">HTML</div>
+                    <div class="pill">Css</div>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <div class="project-media">
+                    <img src="images/ssh.jpg" alt="Static Website screenshot"
+                         onclick="openLightbox(this.src, this.alt)"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="lazy">
+                    <div class="project-img-placeholder" style="display:none;">
+                        <p><i class="fa-solid fa-image" style="font-size:1.1rem; margin:0 6px 0 0;"></i> Add screenshot here</p>
+                    </div>
+                </div>
+                <h3>Student Social Platform Website</h3>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">2nd Year</p>
+                <p class="placeholder-text">Website dedicated for students to socialize and find their similar interest.</p>
+                <div class="skill-pills">
+                    <div class="pill">HTML</div>
+                    <div class="pill">CSS</div>
+                    <div class="pill">Group Collaboration</div>
+                </div>
+            </div>
+
+            <div class="bento-card">
+                <div class="project-media">
+                    <img src="images/tekken_app.jpg" alt="Static Website screenshot"
+                         onclick="openLightbox(this.src, this.alt)"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" loading="lazy">
+                    <div class="project-img-placeholder" style="display:none;">
+                        <p><i class="fa-solid fa-image" style="font-size:1.1rem; margin:0 6px 0 0;"></i> Add screenshot here</p>
+                    </div>
+                </div>
+                <h3>A TEKKEN DLC APP</h3>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">2nd Year</p>
+                <p class="placeholder-text">A DLC Tekken App using Android Studio.</p>
+                <div class="skill-pills">
+                    <div class="pill">Android Studio</div>
+                    <div class="pill">Group Work</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="experience" style="background: rgba(30, 41, 59, 0.3);">
+        <h2 class="section-title">Milestones</h2>
+        <div class="timeline">
+
+            <div class="timeline-item">
+                <div class="timeline-date">4th Year (Current)</div>
+                <h3>Senior Year & Capstone Focus</h3>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Applying advanced course concepts to modern software solutions.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">3rd Year</div>
+                <h3>Specialization & Project Planning</h3>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Focused core skills around specialized IT domains and technical execution.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">2nd Year</div>
+                <h3>Static Website Development</h3>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Built front-end projects, solidifying core HTML and CSS foundations.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">1st Year</div>
+                <h3>First Group Web Project</h3>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Collaborated on initial web development projects within group environments.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Initiate Contact</h2>
+        <div class="contact-container">
+            <div class="contact-info-card">
+                <p style="color: var(--text-muted); line-height: 1.6;">
+                    Interested in connecting or collaborating? Feel free to send a message.
+                </p>
+                
+                <div class="contact-method">
+                    <div class="icon-box"><i class="fa-solid fa-envelope"></i></div>
+                    <div>
+                        <h4 style="font-size:0.9rem; color:var(--text-muted);">Email</h4>
+                        <p style="font-weight: 500;">rodjsioting@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="contact-method">
+                    <div class="icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                    <div>
+                        <h4 style="font-size:0.9rem; color:var(--text-muted);">Base Location</h4>
+                        <p style="font-weight: 500;">Western Visayas, Philippines</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 style="font-size:0.9rem; color:var(--text-muted); margin-bottom:0.8rem;">External Networks</h4>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                        <a href="https://www.linkedin.com/in/YOUR_USERNAME_HERE" class="platform-badge" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-brands fa-linkedin" style="color:#0a66c2;"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/rodj-sio" class="platform-badge" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fa-brands fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <form id="portfolio-contact-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <input type="text" id="form-name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="form-email" placeholder="Your Email Address" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="form-message" rows="6" placeholder="Write message or inquiry here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Send Message <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i></button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Rodjomar Sioting Jr. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox-overlay" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+        <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- Script Blocks -->
+    <script>
+        function openLightbox(src, altText) {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = altText || '';
+            overlay.classList.add('active');
+        }
+        
+        function closeLightbox() {
+            document.getElementById('lightbox-overlay').classList.remove('active');
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! This form is set up and ready to connect to your backend service.');
+        }
+    </script>
+</body>
+</html>
